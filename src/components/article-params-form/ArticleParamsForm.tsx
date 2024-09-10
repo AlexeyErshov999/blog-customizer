@@ -1,16 +1,124 @@
+/** Компоненты */
 import { ArrowButton } from 'components/arrow-button';
 import { Button } from 'components/button';
+import { Text } from 'components/text';
+import { Select } from 'components/select';
+import { RadioGroup } from '../radio-group';
+import { Separator } from '../separator';
 
+/** Хуки и события */
+import { FormEvent, useRef, useState } from 'react';
+import { useCloseArticleParamsFrom } from './hooks/useCloseArticleParamsFrom';
+
+/** Стили */
+import clsx from 'clsx';
 import styles from './ArticleParamsForm.module.scss';
 
-export const ArticleParamsForm = () => {
+/** Типы и константы */
+import {
+	OptionType,
+	backgroundColors,
+	contentWidthArr,
+	fontColors,
+	fontFamilyOptions,
+	fontSizeOptions,
+} from 'src/constants/articleProps';
+import { TArticleParamsFormProps } from './hooks/types';
+
+export const ArticleParamsForm = ({
+	state,
+	setState,
+	editStyle,
+	acceptStyle,
+}: TArticleParamsFormProps) => {
+	const [isOpen, setIsOpen] = useState(false);
+
+	const changeMenuVisibility = () => {
+		setIsOpen((prev) => !prev);
+	};
+
+	/** Универсальная функция для смены значения какого либо свойства */
+	const updateState = (key: string, value: OptionType) => {
+		setState((prevState) => ({ ...prevState, [key]: value }));
+	};
+
+	const handleFontFamilyChange = (value: OptionType) =>
+		updateState('fontFamilyOption', value);
+	const handleFontSizeChange = (value: OptionType) =>
+		updateState('fontSizeOption', value);
+	const handleFontColorChange = (value: OptionType) =>
+		updateState('fontColor', value);
+	const handleBackgroundColorChange = (value: OptionType) =>
+		updateState('backgroundColor', value);
+	const handleContentWidthChange = (value: OptionType) =>
+		updateState('contentWidth', value);
+
+	const formRef = useRef<HTMLFormElement | null>(null);
+
+	useCloseArticleParamsFrom({
+		isOpened: isOpen,
+		onClose: changeMenuVisibility,
+		ref: formRef,
+	});
+
 	return (
 		<>
-			<ArrowButton />
-			<aside className={styles.container}>
-				<form className={styles.form}>
+			<ArrowButton
+				onClick={() => !isOpen && changeMenuVisibility()}
+				isOpened={isOpen}
+			/>
+			<aside
+				className={clsx(styles.container, {
+					[styles.container_open]: isOpen,
+				})}>
+				<form
+					className={styles.form}
+					ref={formRef}
+					onSubmit={(e: FormEvent) => {
+						e.preventDefault();
+						acceptStyle();
+					}}>
+					<Text as={'h2'} size={31} weight={800} uppercase={true}>
+						Задайте параметры
+					</Text>
+					<Select
+						selected={state.fontFamilyOption}
+						options={fontFamilyOptions}
+						placeholder='Выберите шрифт'
+						title='шрифт'
+						onChange={handleFontFamilyChange}
+					/>
+					<RadioGroup
+						name='fontSize'
+						options={fontSizeOptions}
+						selected={state.fontSizeOption}
+						title='размер шрифта'
+						onChange={handleFontSizeChange}
+					/>
+					<Select
+						selected={state.fontColor}
+						options={fontColors}
+						placeholder='Выберите цвет'
+						title='цвет шрифта'
+						onChange={handleFontColorChange}
+					/>
+					<Separator />
+					<Select
+						selected={state.backgroundColor}
+						options={backgroundColors}
+						placeholder='Выберите цвет'
+						title='цвет фона'
+						onChange={handleBackgroundColorChange}
+					/>
+					<Select
+						selected={state.contentWidth}
+						options={contentWidthArr}
+						placeholder='Выберите ширину'
+						title='ширина контента'
+						onChange={handleContentWidthChange}
+					/>
 					<div className={styles.bottomContainer}>
-						<Button title='Сбросить' type='reset' />
+						<Button title='Сбросить' type='reset' onClick={editStyle} />
 						<Button title='Применить' type='submit' />
 					</div>
 				</form>
