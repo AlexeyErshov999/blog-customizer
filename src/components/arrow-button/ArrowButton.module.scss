@@ -10,8 +10,9 @@
 	height: 100px;
 	background-color: #000000;
 	border-right: 1px;
-	transition: transform 0.5s ease;
-	transition: background-color 0.3s ease;
+
+	// объединил transitions для корректного выдвижения кнопки
+	transition: transform 0.5s ease, background-color 0.3s ease;
 }
 
 .container:hover {

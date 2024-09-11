@@ -6,22 +6,22 @@ export const useCloseArticleParamsFrom = ({
 	isOpened,
 	ref,
 }: TCloseFormHook) => {
-	/** Функция обработки клика вне модального окна */
-	const handleOutsideClick = (e: MouseEvent) => {
-		if (
-			e.target instanceof Node &&
-			!ref.current?.contains(e.target) &&
-			isOpened
-		)
-			onClose?.();
-	};
-
-	/** Функция закрытия модальнго окна по Escape */
-	const handleEscapeClick = (e: KeyboardEvent) => {
-		if (e.key === 'Escape' && isOpened) onClose?.();
-	};
-
 	useEffect(() => {
+		/** Функция обработки клика вне модального окна */
+		const handleOutsideClick = (e: MouseEvent) => {
+			if (
+				e.target instanceof Node &&
+				!ref.current?.contains(e.target) &&
+				isOpened
+			)
+				onClose?.();
+		};
+
+		/** Функция закрытия модальнго окна по Escape */
+		const handleEscapeClick = (e: KeyboardEvent) => {
+			if (e.key === 'Escape' && isOpened) onClose?.();
+		};
+
 		/** Если окно не открыто, useEffect прекращает работу */
 		if (!isOpened) return;
 

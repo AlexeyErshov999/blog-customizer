@@ -31,10 +31,10 @@ export const ArticleParamsForm = ({
 	editStyle,
 	acceptStyle,
 }: TArticleParamsFormProps) => {
-	const [isOpen, setIsOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const changeMenuVisibility = () => {
-		setIsOpen((prev) => !prev);
+		setIsMenuOpen((prev) => !prev);
 	};
 
 	/** Универсальная функция для смены значения какого либо свойства */
@@ -56,7 +56,7 @@ export const ArticleParamsForm = ({
 	const formRef = useRef<HTMLFormElement | null>(null);
 
 	useCloseArticleParamsFrom({
-		isOpened: isOpen,
+		isOpened: isMenuOpen,
 		onClose: changeMenuVisibility,
 		ref: formRef,
 	});
@@ -64,12 +64,12 @@ export const ArticleParamsForm = ({
 	return (
 		<>
 			<ArrowButton
-				onClick={() => !isOpen && changeMenuVisibility()}
-				isOpened={isOpen}
+				onClick={() => !isMenuOpen && changeMenuVisibility()}
+				isOpened={isMenuOpen}
 			/>
 			<aside
 				className={clsx(styles.container, {
-					[styles.container_open]: isOpen,
+					[styles.container_open]: isMenuOpen,
 				})}>
 				<form
 					className={styles.form}
