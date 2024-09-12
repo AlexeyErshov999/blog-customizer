@@ -8,8 +8,7 @@ export type TCloseFormHook = {
 };
 
 export type TArticleParamsFormProps = {
-	state: typeof defaultArticleState;
-	setState: React.Dispatch<React.SetStateAction<typeof defaultArticleState>>;
-	editStyle: () => void;
-	acceptStyle: () => void;
+	setCurrentArticle: React.Dispatch<
+		React.SetStateAction<typeof defaultArticleState>
+	>;
 };

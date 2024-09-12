@@ -19,6 +19,7 @@ import {
 	OptionType,
 	backgroundColors,
 	contentWidthArr,
+	defaultArticleState,
 	fontColors,
 	fontFamilyOptions,
 	fontSizeOptions,
@@ -26,12 +27,21 @@ import {
 import { TArticleParamsFormProps } from './hooks/types';
 
 export const ArticleParamsForm = ({
-	state,
-	setState,
-	editStyle,
-	acceptStyle,
+	setCurrentArticle,
 }: TArticleParamsFormProps) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [formInputs, setFormInputs] = useState(defaultArticleState);
+
+	/** Функция сброса стилей формы к дефолтным */
+	const resetForm = () => {
+		setFormInputs(defaultArticleState);
+		setCurrentArticle(defaultArticleState);
+	};
+
+	/** Функция принятия изменений формы */
+	const applyFormChanges = () => {
+		setCurrentArticle(formInputs);
+	};
 
 	const changeMenuVisibility = () => {
 		setIsMenuOpen((prev) => !prev);
@@ -39,7 +49,7 @@ export const ArticleParamsForm = ({
 
 	/** Универсальная функция для смены значения какого либо свойства */
 	const updateState = (key: string, value: OptionType) => {
-		setState((prevState) => ({ ...prevState, [key]: value }));
+		setFormInputs((prevState) => ({ ...prevState, [key]: value }));
 	};
 
 	const handleFontFamilyChange = (value: OptionType) =>
@@ -76,13 +86,13 @@ export const ArticleParamsForm = ({
 					ref={formRef}
 					onSubmit={(e: FormEvent) => {
 						e.preventDefault();
-						acceptStyle();
+						applyFormChanges();
 					}}>
 					<Text as={'h2'} size={31} weight={800} uppercase={true}>
 						Задайте параметры
 					</Text>
 					<Select
-						selected={state.fontFamilyOption}
+						selected={formInputs.fontFamilyOption}
 						options={fontFamilyOptions}
 						placeholder='Выберите шрифт'
 						title='шрифт'
@@ -91,12 +101,12 @@ export const ArticleParamsForm = ({
 					<RadioGroup
 						name='fontSize'
 						options={fontSizeOptions}
-						selected={state.fontSizeOption}
+						selected={formInputs.fontSizeOption}
 						title='размер шрифта'
 						onChange={handleFontSizeChange}
 					/>
 					<Select
-						selected={state.fontColor}
+						selected={formInputs.fontColor}
 						options={fontColors}
 						placeholder='Выберите цвет'
 						title='цвет шрифта'
@@ -104,21 +114,21 @@ export const ArticleParamsForm = ({
 					/>
 					<Separator />
 					<Select
-						selected={state.backgroundColor}
+						selected={formInputs.backgroundColor}
 						options={backgroundColors}
 						placeholder='Выберите цвет'
 						title='цвет фона'
 						onChange={handleBackgroundColorChange}
 					/>
 					<Select
-						selected={state.contentWidth}
+						selected={formInputs.contentWidth}
 						options={contentWidthArr}
 						placeholder='Выберите ширину'
 						title='ширина контента'
 						onChange={handleContentWidthChange}
 					/>
 					<div className={styles.bottomContainer}>
-						<Button title='Сбросить' type='reset' onClick={editStyle} />
+						<Button title='Сбросить' type='reset' onClick={resetForm} />
 						<Button title='Применить' type='submit' />
 					</div>
 				</form>

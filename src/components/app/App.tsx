@@ -14,18 +14,6 @@ import { ArticleParamsForm } from '../article-params-form';
 // Вынес App в отдельный файл
 export const App = () => {
 	const [currentArticle, setCurrentArticle] = useState(defaultArticleState);
-	const [formInputs, setFormInputs] = useState(defaultArticleState);
-
-	/** Функция сброса стилей формы к дефолтным */
-	const resetForm = () => {
-		setFormInputs(defaultArticleState);
-		setCurrentArticle(defaultArticleState);
-	};
-
-	/** Функция принятия изменений формы */
-	const applyFormChanges = () => {
-		setCurrentArticle(formInputs);
-	};
 
 	return (
 		<main
@@ -39,12 +27,7 @@ export const App = () => {
 					'--bg-color': currentArticle.backgroundColor.value,
 				} as CSSProperties
 			}>
-			<ArticleParamsForm
-				state={formInputs}
-				setState={setFormInputs}
-				editStyle={resetForm}
-				acceptStyle={applyFormChanges}
-			/>
+			<ArticleParamsForm setCurrentArticle={setCurrentArticle} />
 			<Article />
 		</main>
 	);
