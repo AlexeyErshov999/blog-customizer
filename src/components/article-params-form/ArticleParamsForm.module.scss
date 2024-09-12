@@ -16,7 +16,12 @@
 	display: flex;
 	flex-shrink: 0;
 	flex-direction: column;
+
+	// добавил расстояние между блоками
+	gap: 50px;
 	box-sizing: border-box;
+
+	// подкорректировал ширину формы, чтобы убрать горизнтальный скорлл
 	width: 616px;
 	height: auto;
 	min-height: 100%;
